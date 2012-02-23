@@ -3,8 +3,8 @@ $TEST_SUITE ||= []
 module Spectrum
 
   require 'spectrum/world'
-  require 'spectrum/it'
   require 'spectrum/hooks'
+  require 'spectrum/it'
   require 'spectrum/describe'
 
   module DSL

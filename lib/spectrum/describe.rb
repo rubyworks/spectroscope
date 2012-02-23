@@ -207,6 +207,8 @@ module Spectrum
         return describe
       end
 
+      alias_method :context, :describe
+
       #
       # Create a spec behavior.
       #
