@@ -1,0 +1,7 @@
+--output-dir doc
+--protected
+--readme README.rdoc
+lib
+-
+[A-Z]*.*
+
