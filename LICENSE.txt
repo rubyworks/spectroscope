@@ -1,4 +1,4 @@
-Spritz, Copyright 2012 Rubyworks. All rights reserved.
+Spectum, Copyright 2012 Rubyworks. All rights reserved.
 
 BSD-2-Clause License
 

@@ -1,6 +1,7 @@
+.reap/digest
 .yardoc
 doc
 log
 pkg
-site/api
 tmp
+web

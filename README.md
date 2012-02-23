@@ -1,14 +1,12 @@
 # Spectrum
 
+FreeBSD Copyright (c) 2012 Rubyworks
+
 [Homepage](http://rubyworks.github.com/spectrum) /
 [Report Issue](http://github.com/rubyworks/spectrum/issues) /
 [Source Code](http://github.com/rubyworks/spectrum)
 
 [![Build Status](https://secure.travis-ci.org/rubyworks/spectrum.png)](http://travis-ci.org/rubyworks/spectrum)
-
-Author:: Thomas Sawyer
-License:: FreeBSD
-Copyright:: (c) 2012 Rubyworks
 
 
 ## Description
