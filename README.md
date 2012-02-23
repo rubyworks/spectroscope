@@ -11,7 +11,7 @@ FreeBSD Copyright (c) 2012 Rubyworks
 
 ## Description
 
-Spectrum is an RSpec-style BDD framework that runs on top of the RubyTest,
+Spectrum is an RSpec-style BDD framework that runs on top of the [Ruby Test](http://rubyworks.github.com/rubytest),
 the Ruby universal test harness. It supports all of RSpec's syntax, with a
 few exceptions.
 
@@ -40,8 +40,8 @@ Here's RSpec classic example:
 
 Spectrum only handle the specification structure, it does not provide an
 assertions system. For that use any of a number of available libraries,
-such Assay-RSpec or AE. You can require these in a helper script, or
-in RubyTest configuration (see below).
+such [Assay-RSpec](http://rubyworks.github.com/assay-rspec) or [AE](http://rubyworks.github.com/ae).
+You can require these in a helper script, or in Ruby Test configuration (see below).
 
 ### Running Specifications
 
@@ -56,6 +56,10 @@ To make things simpler, create a `.test` configuration file.
     Test.run :default do |run|
       run.files << 'spec/*_spec.rb'
     end
+
+Then simply use:
+
+    $ rubytest
 
 
 ## Copyrights
