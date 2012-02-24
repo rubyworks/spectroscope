@@ -2,7 +2,7 @@
 
 #require 'ae'
 require 'ae/should'
-require 'spectrum'
+require 'spectra'
 
 Test.run :default do |run|
   run.files << 'spec/*_spec.rb'

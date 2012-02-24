@@ -1,16 +1,17 @@
 #!mast .ruby .yaropts bin lib spec test [A-Z]*.*
 .ruby
-lib/spectrum/describe.rb
-lib/spectrum/hooks.rb
-lib/spectrum/it.rb
-lib/spectrum/world.rb
-lib/spectrum.rb
-lib/spectrum.yml
+lib/spectra/describe.rb
+lib/spectra/example.rb
+lib/spectra/hooks.rb
+lib/spectra/world.rb
+lib/spectra.rb
+lib/spectra.yml
 spec/hooks_spec.rb
 spec/let_spec.rb
 spec/scope_spec.rb
+spec/shared_example_spec.rb
 spec/subject_spec.rb
-HISTORY.rdoc
 LICENSE.txt
-README.rdoc
+HISTORY.md
+README.md
 COPYING.rdoc

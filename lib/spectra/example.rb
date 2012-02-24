@@ -1,17 +1,21 @@
-module Spectrum
+module Spectra
 
-  # Behavior specification.
+  # Example behavior.
   #
-  class It
+  # This is the `it` in your specs.
+  #
+  class Example
 
     # Defines a specification procedure.
     #
     def initialize(options={}, &procedure)
       @parent = options[:parent]
-      @hooks  = options[:hooks]
       @label  = options[:label]
+      @hooks  = options[:hooks]
       @skip   = options[:skip]
       @tags   = options[:tags]
+      @keys   = options[:keys]
+      @topic  = options[:topic]
 
       @procedure = procedure || lambda{ raise NotImplementedError } # pending
 
@@ -26,19 +30,31 @@ module Spectrum
     attr :parent
 
     #
-    #
+    # Before and after advice.
     #
     attr :hooks
 
     #
-    # Description of test.
+    # Description of example.
     #
     attr :label
 
     #
-    #
+    # List of identifying tags attached to example. These should
+    # be a list of Symbols.
     #
     attr :tags
+
+    #
+    # A map of Symbol => Object, which works like `tags`, but allows
+    # got key-value relationship, rather than just symbolic tags.
+    #
+    attr :keys
+
+    #
+    # In RSpec data keys are called metadata.
+    #
+    alias_method :metadata, :keys
 
     #
     # Test procedure, in which test assertions should be made.
@@ -93,12 +109,12 @@ module Spectrum
       label.to_s
     end
 
-    ##
-    ## Ruby Test looks for `topic` as the desciption of a test's setup.
-    ##
-    #def topic
-    #  @hooks.to_s
-    #end
+    #
+    # Ruby Test looks for `topic` as the desciption of the subject.
+    #
+    def topic
+      @topic.to_s
+    end
 
     #
     # The shared It::Scope from the parent.
@@ -127,18 +143,16 @@ module Spectrum
     #
     # If +match+ is a Regexp or String, match against label.
     # If +match+ is a Symbol, match against tags.
-    # If +match+ is a Hash, match against metadata tags.
+    # If +match+ is a Hash, match against keys.
     #
     def match?(match)
       case match
       when Regexp, String
         match === label
       when Hash
-        Hash === tags.last && (
-          match.any?{ |k,v| tags.last[k] == v }
-        )
+        match.any?{ |k,m| m === keys[k] }
       else
-        tags.include?(match)
+        tags.include(match.to_sym)
       end
     end
 
@@ -160,11 +174,14 @@ module Spectrum
     class Scope < World
 
       #
+      # @group [Describe]
       #
-      #
-      def initialize(describe)
-        extend describe.scope
-        #extend describe.it_scope
+      def initialize(group)
+        @_group = group
+        extend group.scope
+        #include group.scope
+        #extend self
+        @_let ||= {}
       end
 
       #
@@ -175,10 +192,41 @@ module Spectrum
       end
 
       #
+      def subject
+        @_subject ||= (
+          if defined?(super)
+            super || described_class.new
+          else
+            described_class.new
+          end
+        )
+      end
+
+    private
+
+      # Handle implicit subject.
+      def method_missing(s, *a, &b)
+        subject.__send__(s, *a, &b)  # public_send
+      end
+
+      #if method_defined?(:should)
+      #  # Handle implicit subject on should.
+      #  # @todo Same for method_missing ?
+      #  def should(*a,&b)
+      #    subject.should(*a,&b)
+      #  end
+      #end
+
       #
+      # @todo Maybe deprecate. It seems silly.
       #
-      def __let_cache
-        @__let_cache ||= {}
+      def described_class
+        case @_group.subject
+        when Class
+          @_group.subject
+        else
+          raise NoMethodError, "undefined method `described_class` for #{self}"
+        end
       end
 
     end

@@ -1,9 +1,11 @@
-module Spectrum
+module Spectra
 
-  # Describe is the BDD form of a testcase. It organizes a collection of
-  # behavior specifications.
+  # This is the BDD form of a testcase. It encapsulates a collection of
+  # behavior examples.
   #
-  class Describe
+  # This is the `describe` in your specs.
+  #
+  class Specification
 
     #
     # The parent context in which this describe resides.
@@ -11,12 +13,17 @@ module Spectrum
     attr :parent
 
     #
-    # The text description of the describe clause.
+    # A description of the describe clause.
     #
     attr :label
 
     #
+    # A target class, if any.
     #
+    attr :subject
+
+    #
+    # Array and/or metadata Hash of tags.
     #
     attr :tags
 
@@ -31,7 +38,16 @@ module Spectrum
     attr :hooks
 
     #
-    # Specs to skip based on match criteria.
+    # Skip critera.
+    #
+    # @return [Array<String,Proc>]
+    #
+    attr :skips
+
+    #
+    # Omit criteria.
+    #
+    # @return [Array<String,Proc>]
     #
     attr :skips
 
@@ -45,6 +61,7 @@ module Spectrum
     #
     def initialize(settings={}, &block)
       @parent  = settings[:parent]
+      @subject = settings[:subject]
       @label   = settings[:label]
       @tags    = settings[:tags]
       #@skips  = settings[:skips]
@@ -53,9 +70,11 @@ module Spectrum
       if @parent
         @hooks = parent.hooks.clone
         @skips = parent.skips.clone
+        @omits = parent.omits.clone
       else
         @hooks = Hooks.new
         @skips = []
+        @omits = []
       end
 
       @specs = []
@@ -66,15 +85,19 @@ module Spectrum
     end
 
     #
-    # Evalute a block of code in the context of the Describe's scope.
-    # When finished it iterates over `skips` and marksa any matching
-    # specs to be skipped.
+    # Evalute a block of code in the context of the Specification's scope.
+    # When finished it iterates over `omits` and `skips`, removing and
+    # marks examples to be skipped respectively.
     #
     def evaluate(&block)
       @scope.module_eval(&block)
 
+      specs.delete_if do |spec|
+        omits.any?{ |reason, block| block.call(spec) }
+      end
+
       specs.each do |spec|
-        skips.each do |match, reason|
+        skips.each do |reason, block|
           if spec.match?(match)
             spec.skip = reason
           end
@@ -86,11 +109,11 @@ module Spectrum
     # Shared runtime scope for specs.
     #
     def it_scope
-      @it_scope ||= It::Scope.new(self)
+      @it_scope ||= Example::Scope.new(self)
     end
 
     #
-    #
+    # Add `it` or sub-`describe` to group.
     #
     def <<(spec)
       @specs << spec
@@ -121,21 +144,24 @@ module Spectrum
     end
 
     #
-    #
+    # Ruby Test supports `type` to describe the nature of
+    # the underlying test system.
     #
     def type
       'describe'
     end
 
+    alias :inspect :to_s
+
     #
-    #
+    # Returns the subject/label as string.
     #
     def to_s
       label.to_s
     end
 
     #
-    #
+    # Skip this group?
     #
     def skip?
       @skip
@@ -172,62 +198,79 @@ module Spectrum
       #end
     end
 
-    # Describe scope is used for defining sepcifications.
+    # Specification scope is used for defining sepcifications.
     #
     class Scope < World
 
       #
       # Setup new evaluation scope.
       #
-      def initialize(describe)
-        @_desc  = describe
-        @_hooks = describe.hooks
-        @_skips = describe.skips
+      def initialize(group)
+        @_group = group
+        @_hooks = group.hooks
+        @_skips = group.skips
+        @_omits = group.omits
 
-        if describe.parent
-          extend(describe.parent.scope)
+        if group.parent
+          include(group.parent.scope)
         end
       end
 
       #
-      # Create a .
+      # Create a new sub-specification.
       #
-      def describe(label, *tags, &block)
-        settings = {
-          :parent  => @_desc,
-          :hooks   => @_hooks,
-          :skips   => @_skips,
-          :label   => label,
-          :tags    => tags
-        }
-        describe = Describe.new(settings, &block)
+      def describe(topic, *tags, &block)
+        settings = {}
+        settings[:parent]  = @_group
+        settings[:subject] = @_group.subject
+        settings[:tags]    = tags
 
-        @_desc.specs << describe
+        if Class === topic
+          settings[:subject] = topic
+          settings[:label]   = topic.name
+        else
+          settings[:label]   = topic
+        end
 
-        return describe
+        group = Specification.new(settings, &block)
+
+        @_group.specs << group
+
+        return group
       end
 
       alias_method :context, :describe
 
       #
-      # Create a spec behavior.
+      # Create an example behavior.
       #
-      # If tags are given, so must a label.
+      # If tags or keys are given, so must a label.
       #
       def it(label=nil, *tags, &procedure)
+        keys = (Hash===tags ? tags.pop : {})
+
         settings = {
-          :parent  => @_desc,
-          :hooks   => @_hooks,
-          :skips   => @_skips,
-          :label   => label,
-          :tags    => tags
+          :parent => @_group,
+          :hooks  => @_hooks,
+          :skips  => @_skips,
+          :omits  => @_omits,
+          :topic  => @_topic,
+          :label  => label,
+          :tags   => tags,
+          :keys   => keys
         }
-        spec = It.new(settings, &procedure)
+
+        spec = Example.new(settings, &procedure)
        
-        @_desc.specs << spec
+        @_group.specs << spec
 
         spec
       end
+
+      #
+      #
+      #
+      alias_method :example, :it
 
       #
       # Define before procedure.
@@ -255,7 +298,6 @@ module Spectrum
       #   against tags to trigger the before procedure.
       #
       def before(which=:each, *tags, &procedure)
-        #which = :each if which != :all  # temporary
         @_hooks.add(:before, which, *tags, &procedure)
       end
 
@@ -289,13 +331,8 @@ module Spectrum
       #   to trigger the after procedure.
       #
       def after(which=:each, *tags, &procedure)
-        #which = :each if which != :all  # temporary
         @_hooks.add(:after, which, *tags, &procedure)
       end
-
-# TODO: RubyTest, should omit and skip swap meanings?
-
-      # TODO: Rename `omit` ?
 
       #
       # Mark specs or sub-cases to be skipped.
@@ -304,10 +341,25 @@ module Spectrum
       #   it "should do something" do
       #     ...
       #   end
-      #   skip(/something/, "reason for skipping")
+      #   skip(/something/, "reason for skipping") if jruby?
       #
-      def skip(match, reason=true)
-        @_skips << [match, reason || true]
+      def skip(reason, &block)
+        @_skips << [reason, block]
+      end
+
+      #
+      # Mark specs or sub-cases to be omitted. Omitting a test is different
+      # from skipping, in tha the later is still sent up to the test harness,
+      # where as omitted tests never get added at all.
+      #
+      # @example
+      #   it "should do something" do
+      #     ...
+      #   end
+      #   omit(/something/) if jruby?
+      #
+      def omit(reason=true, &block)
+        @_omits << [reason, block]
       end
 
       #
@@ -315,16 +367,61 @@ module Spectrum
       #
       def let(name, &block)
         define_method(name) do
-          __let_cache.fetch(name) {|k| __let_cache[k] = instance_eval(&block) }
-          #__let_cache[name] ||= block.call
+          #_let[name] ||= block.call
+          @_let.fetch(name){ |k| @_let[k] = instance_eval(&block) }
         end
       end
 
       #
       #
       #
-      def subject(&block)
+      def let!(name, &block)
+        let(name, &block)
+        before { __send__(name) }
+      end
+
+      #
+      #
+      #
+      def subject(topic=nil, &block)
+        @_topic = topic
         define_method(:subject, &block)
+      end
+
+      #
+      # Subject-oriented example.
+      #
+      # RSpec itself wraps this whole thing in another `describe(invocation)`
+      # clause, but that seems completely extraneous.
+      #
+      def its(invocation, &block)
+        case invocation
+        when Symbol
+          it(invocation.to_s) do
+            subject.__send__(invocation).instance_eval(&block)
+          end
+        else
+          it(invocation.to_s) do
+            #eval("subject.#{invocation}", binding).instance_eval(&block)
+            calls = invocation.to_s.split('.')
+            calls.inject(subject){ |s,m| s.__send__(invocation) }.instance_eval(&block)
+          end
+        end
+      end
+
+      #
+      #
+      #
+      #def shared_examples_for(label, &block)
+      #  @_shared_examples[label] = block
+      #end
+
+      #
+      #
+      #
+      def it_behaves_like(label)
+        proc = Spectrum.shared_examples[label]
+        module_eval(&proc)
       end
 
     end

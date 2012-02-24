@@ -1,19 +1,19 @@
 #!/usr/bin/env ruby
 
-name    'spectrum'
+name    'spectra'
 version '0.1.0'
-title   'Spectrum'
+title   'Spectra'
 summary 'RSpec-like BDD on RubyTest'
 created '2012-02-22'
 
-description 'Spectrum is a BDD framework built on RubyTest designed to emulate ' \
+description 'Spectra is a BDD framework built on RubyTest designed to emulate ' \
             'RSpec in most respects.'
 
-resources 'home' => 'http://rubyworks.github.com/spectrum',
-          'code' => 'http://github.com/rubyworks/spectrum',
+resources 'home' => 'http://rubyworks.github.com/spectra',
+          'code' => 'http://github.com/rubyworks/spectra',
           'mail' => 'http://groups.google.com/groups/rubyworks-mailinglist'
 
-repositories 'upstream' => 'git://github.com/proutils/spectrum.git'
+repositories 'upstream' => 'git://github.com/proutils/spectra.git'
 
 requirements [
   'rubytest',
@@ -31,3 +31,4 @@ authors [
 copyrights [
   '2012 Rubyworks (BSD-2-Clause)'
 ]
+

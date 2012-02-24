@@ -1,11 +1,8 @@
-module Spectrum
+module Spectra
 
   # Specification advice.
   #
   class Hooks
-
-    ## A brief description of the advice (optional).
-    #attr :label
 
     #
     # New case instance.
@@ -74,6 +71,9 @@ module Spectrum
     #
     class Hook
 
+      ## A brief description of the advice (optional).
+      #attr :subject
+
       def initialize(tense, scope, *tags, &proc)
         @tense = tense
         @scope = scope
@@ -82,7 +82,7 @@ module Spectrum
       end
 
       #
-      # Check for mathcing labels or tags for each advice.
+      # Check for matching subjects or tags for each advice.
       #
       def match?(it)
         return true if @tags.empty?

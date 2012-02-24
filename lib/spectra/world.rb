@@ -1,4 +1,4 @@
-module Spectrum
+module Spectra
 
   #
   class World < Module
