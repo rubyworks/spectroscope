@@ -1,0 +1,48 @@
+body { margin: 0; padding: 0; }
+
+h1 { font-family: times; font-size: 400%; margin: 20px 0; color: #f7d901; }
+h2 { font-size: 220%; margin-top: 30px; color: #444; }
+h3 { font-size: 190%; color: green; }
+
+p { color: #222; font-weight: normal; font-size: 110%; }
+a { color: #622; }
+a:hover { text-decoration: underline; }
+
+ pre { background: #ffffff; border-radius: 10px; line-height: 150%; font-size: 1em; }}
+code { color: #222; font-weight: bold; }
+  tt { color: #222; font-weight: bold; }
+
+#nav { padding: 20px 60px 20px 60px; text-align: right; color: pink; }
+#nav a { font-size: 160%; font-weight: normal; line-height: 150%; color: red; padding: 0 5px; }
+#nav a:hover { color: orange; text-decoration: none; }
+
+#header { height: 250px; text-align: left; }
+#header h1 { font-size: 100px; margin: 0; padding: 25px 0 0 0; color: red; margin-left: -10px; text-shadow: 5px 5px 5px #ccc; }
+#header h2 { padding: 0 0 0 140px; margin-top: 0; }
+
+#main { color: white; padding: 20px 0 30px 0; background: url(../images/bg.jpg) top left white; }
+#main p { font-weight: bold; font-family: sans-serif; font-size: 1.8em; color: #222; font-weight: bold; text-shadow: 1px 1px white; }
+#main h2 { color: #333333; }
+#main h3 { color: #333333; }
+
+#example { clear: both; }
+#example p { font-size: 1.5em; }
+
+#footer { margin-top: 40px; padding: 60px 0 50px 0; text-align: center; background: url(../images/bg.jpg) bottom left white; }
+#footer .copyright { padding-top: 0; }
+#footer .copyright p { color: #222; font-weight: normal; font-size: 80%; line-height: 150%; }
+
+#forkme {
+  position: absolute;
+  top: 0; right: 0;
+  width: 150px;
+}
+
+.page { width: 730px; margin: 0 auto; }
+
+.bordered { border-top: 2px solid #ccc; border-bottom: 2px solid #ccc; }
+
+.copyright { padding: 0; text-align: left; }
+.copyright td { font-size: 10px; color: #444; }
+
+
