@@ -1,6 +1,6 @@
 module Spectra
 
-  # Specification advice.
+  # Context advice.
   #
   class Hooks
 

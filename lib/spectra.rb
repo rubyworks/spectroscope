@@ -5,7 +5,7 @@ module Spectra
   require 'spectra/world'
   require 'spectra/hooks'
   require 'spectra/example'
-  require 'spectra/describe'
+  require 'spectra/context'
 
   module DSL
     #
@@ -21,14 +21,14 @@ module Spectra
         settings[:label]   = topic
       end
 
-      $TEST_SUITE << Spectra::Specification.new(settings, &block)
+      $TEST_SUITE << Spectra::Context.new(settings, &block)
     end
 
     #
     #
     #
     def shared_examples_for(label, &block)
-      Spectrum.shared_examples[label] = block
+      Spectra.shared_examples[label] = block
     end
   end
 

@@ -1,11 +1,11 @@
 module Spectra
 
-  # This is the BDD form of a testcase. It encapsulates a collection of
-  # behavior examples.
+  # This is the BDD form of a test case. It encapsulates a collection
+  # of examples.
   #
   # This is the `describe` in your specs.
   #
-  class Specification
+  class Context
 
     #
     # The parent context in which this describe resides.
@@ -28,7 +28,7 @@ module Spectra
     attr :tags
 
     #
-    # List of specs and sub-describes.
+    # List of examples and sub-specifications.
     #
     attr :specs
 
@@ -49,7 +49,7 @@ module Spectra
     #
     # @return [Array<String,Proc>]
     #
-    attr :skips
+    attr :omits
 
     #
     # DSL module for evaluating `describe` blocks.
@@ -85,7 +85,7 @@ module Spectra
     end
 
     #
-    # Evalute a block of code in the context of the Specification's scope.
+    # Evalute a block of code in the context of the Context's scope.
     # When finished it iterates over `omits` and `skips`, removing and
     # marks examples to be skipped respectively.
     #
@@ -198,7 +198,7 @@ module Spectra
       #end
     end
 
-    # Specification scope is used for defining sepcifications.
+    # Context scope is used for defining sepcifications.
     #
     class Scope < World
 
@@ -232,7 +232,7 @@ module Spectra
           settings[:label]   = topic
         end
 
-        group = Specification.new(settings, &block)
+        group = Context.new(settings, &block)
 
         @_group.specs << group
 
@@ -420,7 +420,7 @@ module Spectra
       #
       #
       def it_behaves_like(label)
-        proc = Spectrum.shared_examples[label]
+        proc = Spectra.shared_examples[label]
         module_eval(&proc)
       end
 

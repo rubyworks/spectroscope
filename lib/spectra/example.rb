@@ -6,6 +6,7 @@ module Spectra
   #
   class Example
 
+    #
     # Defines a specification procedure.
     #
     def initialize(options={}, &procedure)
@@ -41,15 +42,18 @@ module Spectra
 
     #
     # List of identifying tags attached to example. These should
-    # be a list of Symbols.
+    # be a list of Symbols, with an optional Symbol=>Object tail element.
     #
     attr :tags
 
     #
-    # A map of Symbol => Object, which works like `tags`, but allows
-    # got key-value relationship, rather than just symbolic tags.
+    # A map of Symbol => Object, which is taken from the end of `tags`.
+    # Unlike tags, keys allow key-value relationships, rather than just
+    # symbolic names.
     #
-    attr :keys
+    def keys
+      Hash === tags.last ? tags.last : {}
+    end
 
     #
     # In RSpec data keys are called metadata.
@@ -60,11 +64,6 @@ module Spectra
     # Test procedure, in which test assertions should be made.
     #
     attr :procedure
-
-    # The before and after advice from the parent.
-    #def hooks
-    #  parent.hooks
-    #end
 
     #
     # RubyTest supports `type` to describe the way in which the underlying
@@ -103,7 +102,9 @@ module Spectra
     end
 
     #
+    # Return label string.
     #
+    # @return [String]
     #
     def to_s
       label.to_s
@@ -134,16 +135,9 @@ module Spectra
     #end
 
     #
-    #
-    #
-    def to_proc
-      lambda{ call }
-    end
-
-    #
     # If +match+ is a Regexp or String, match against label.
-    # If +match+ is a Symbol, match against tags.
     # If +match+ is a Hash, match against keys.
+    # If +match+ is a Symbol, match against tags.
     #
     def match?(match)
       case match
@@ -152,12 +146,12 @@ module Spectra
       when Hash
         match.any?{ |k,m| m === keys[k] }
       else
-        tags.include(match.to_sym)
+        tags.include?(match.to_sym)
       end
     end
 
     #
-    # Execute spec.
+    # Execute example.
     #
     def call
       parent.run(self) do
@@ -167,14 +161,23 @@ module Spectra
       end
     end
 
+    #
+    # Example can be converted to a Proc object.
+    #
+    # @return [Proc]
+    #
+    def to_proc
+      lambda{ call }
+    end
 
-    # It::Scope is used by Describe to create a shared scope for running
-    # `it` behavior specifications.
+
+    # Example::Scope is used by Context to create a shared scope
+    # for running examples.
     #
     class Scope < World
 
       #
-      # @group [Describe]
+      # @param [Context] group
       #
       def initialize(group)
         @_group = group
@@ -185,12 +188,14 @@ module Spectra
       end
 
       #
-      # @raise [NotImplementedError] Spec is a "todo".
+      # @raise [NotImplementedError] Example is a "todo".
       #
       def pending(message=nil)
         raise NotImplementedError.new(message)
       end
 
+      #
+      #
       #
       def subject
         @_subject ||= (
@@ -204,7 +209,9 @@ module Spectra
 
     private
 
+      #
       # Handle implicit subject.
+      #
       def method_missing(s, *a, &b)
         subject.__send__(s, *a, &b)  # public_send
       end
