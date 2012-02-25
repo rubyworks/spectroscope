@@ -2,11 +2,11 @@
 
 == NOTICES
 
-=== Spritz
+=== Spectra
 
 Copyright:: (c) 2011 RubyWorks
 License:: BSD-2-Clause
-Website:: http://rubyworks.github.com/citron
+Website:: http://rubyworks.github.com/spectra
 
 
 == LICENSES
