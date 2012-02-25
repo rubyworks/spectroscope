@@ -1,4 +1,4 @@
-describe Spectrum::Describe::Scope do
+describe Spectra::Context::Scope do
 
   describe "#let" do
     count = 0
