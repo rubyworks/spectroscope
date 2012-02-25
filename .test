@@ -1,17 +1,22 @@
 #!/usr/bin/env ruby
 
-#require 'ae'
-require 'ae/should'
-require 'spectra'
-
 Test.run :default do |run|
   run.files << 'spec/*_spec.rb'
+
+  require 'ae/should'
+  require 'spectra'
 end
 
 Test.run(:cov) do |run|
   run.files << 'spec/*_spec.rb'
-  SimpleCov.start do |cov|
-    cov.coverage_dir = 'log/coverage'
+
+  require 'simplecov'
+
+  SimpleCov.start do
+    require 'ae/should'
+    require 'spectra'
+
+    coverage_dir 'log/coverage'
   end
 end
 
