@@ -48,6 +48,6 @@ summary: RSpec-like BDD on RubyTest
 created: '2012-02-22'
 description: Spectroscope is a BDD framework built on RubyTest designed to emulate
   RSpec in most respects. It is assertion framework independent so any number of assertion
-  systems can use be used such as Assay and AE.
+  systems can be used, such as Assay or AE.
 organization: RubyWorks
 date: '2012-02-23'
