@@ -1,19 +1,24 @@
-# Spectrum
+# Spectroscope
 
 FreeBSD Copyright (c) 2012 Rubyworks
 
-[Homepage](http://rubyworks.github.com/spectrum) /
-[Report Issue](http://github.com/rubyworks/spectrum/issues) /
-[Source Code](http://github.com/rubyworks/spectrum)
+[Homepage](http://rubyworks.github.com/spectroscope) /
+[Report Issue](http://github.com/rubyworks/spectroscope/issues) /
+[Source Code](http://github.com/rubyworks/spectroscope)
 
-[![Build Status](https://secure.travis-ci.org/rubyworks/spectrum.png)](http://travis-ci.org/rubyworks/spectrum)
+[![Build Status](https://secure.travis-ci.org/rubyworks/spectroscope.png)](http://travis-ci.org/rubyworks/spectroscope)
 
 
 ## Description
 
-Spectrum is an RSpec-style BDD framework that runs on top of the [Ruby Test](http://rubyworks.github.com/rubytest),
+Spectroscope is an RSpec-style BDD framework that runs on top of the [Ruby Test](http://rubyworks.github.com/rubytest),
 the Ruby universal test harness. It supports all of RSpec's syntax, with a
 few exceptions.
+
+
+## Installation
+
+  $ gem install spectroscope
 
 
 ## Instruction
@@ -38,7 +43,7 @@ Here's RSpec classic example:
       end
     end
 
-Spectrum only handle the specification structure, it does not provide an
+Spectroscope only handle the specification structure, it does not provide an
 assertions system. For that use any of a number of available libraries,
 such [Assay-RSpec](http://rubyworks.github.com/assay-rspec) or [AE](http://rubyworks.github.com/ae).
 You can require these in a helper script, or in Ruby Test configuration (see below).
@@ -66,7 +71,7 @@ Then simply use:
 
 Copyright (c) 2012 Rubyworks
 
-Spectrum is distributable according to the terms of the FreeBSD license.
+Spectroscope is distributable according to the terms of the **FreeBSD** license.
 
 See COPYING.rdoc for details.
 

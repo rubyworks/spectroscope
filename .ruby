@@ -18,6 +18,10 @@ requirements:
   groups:
   - build
   development: true
+- name: mast
+  groups:
+  - build
+  development: true
 - name: ae
   groups:
   - test
@@ -26,23 +30,23 @@ dependencies: []
 alternatives: []
 conflicts: []
 repositories:
-- uri: git://github.com/proutils/spectra.git
+- uri: git://github.com/proutils/spectroscope.git
   scm: git
   name: upstream
 resources:
-  home: http://rubyworks.github.com/spectra
-  code: http://github.com/rubyworks/spectra
+  home: http://rubyworks.github.com/spectroscope
+  code: http://github.com/rubyworks/spectroscope
   mail: http://groups.google.com/groups/rubyworks-mailinglist
 extra: {}
 load_path:
 - lib
 revision: 0
-name: spectra
-title: Spectra
+name: spectroscope
+title: Spectroscope
 version: 0.1.0
 summary: RSpec-like BDD on RubyTest
 created: '2012-02-22'
-description: Spectra is a BDD framework built on RubyTest designed to emulate RSpec
-  in most respects.
+description: Spectroscope is a BDD framework built on RubyTest designed to emulate
+  RSpec in most respects.
 organization: RubyWorks
 date: '2012-02-23'

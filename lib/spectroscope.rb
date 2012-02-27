@@ -1,11 +1,11 @@
 $TEST_SUITE ||= []
 
-module Spectra
+module Spectroscope
 
-  require 'spectra/world'
-  require 'spectra/hooks'
-  require 'spectra/example'
-  require 'spectra/context'
+  require 'spectroscope/world'
+  require 'spectroscope/hooks'
+  require 'spectroscope/example'
+  require 'spectroscope/context'
 
   module DSL
     #
@@ -21,14 +21,14 @@ module Spectra
         settings[:label]   = topic
       end
 
-      $TEST_SUITE << Spectra::Context.new(settings, &block)
+      $TEST_SUITE << Spectroscope::Context.new(settings, &block)
     end
 
     #
     #
     #
     def shared_examples_for(label, &block)
-      Spectra.shared_examples[label] = block
+      Spectroscope.shared_examples[label] = block
     end
   end
 
@@ -39,5 +39,5 @@ module Spectra
 
 end
 
-extend Spectra::DSL
+extend Spectroscope::DSL
 

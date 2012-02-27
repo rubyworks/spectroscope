@@ -1,4 +1,4 @@
-module Spectra
+module Spectroscope
 
   # This is the BDD form of a test case. It encapsulates a collection
   # of examples.
@@ -420,7 +420,7 @@ module Spectra
       #
       #
       def it_behaves_like(label)
-        proc = Spectra.shared_examples[label]
+        proc = Spectroscope.shared_examples[label]
         module_eval(&proc)
       end
 

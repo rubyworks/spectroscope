@@ -1,4 +1,4 @@
-module Spectra
+module Spectroscope
 
   #
   class World < Module

@@ -1,24 +1,26 @@
 #!/usr/bin/env ruby
 
-name    'spectra'
+name    'spectroscope'
 version '0.1.0'
-title   'Spectra'
+
+title   'Spectroscope'
 summary 'RSpec-like BDD on RubyTest'
 created '2012-02-22'
 
-description 'Spectra is a BDD framework built on RubyTest designed to emulate ' \
+description 'Spectroscope is a BDD framework built on RubyTest designed to emulate ' \
             'RSpec in most respects.'
 
-resources 'home' => 'http://rubyworks.github.com/spectra',
-          'code' => 'http://github.com/rubyworks/spectra',
+resources 'home' => 'http://rubyworks.github.com/spectroscope',
+          'code' => 'http://github.com/rubyworks/spectroscope',
           'mail' => 'http://groups.google.com/groups/rubyworks-mailinglist'
 
-repositories 'upstream' => 'git://github.com/proutils/spectra.git'
+repositories 'upstream' => 'git://github.com/proutils/spectroscope.git'
 
 requirements [
   'rubytest',
   'detroit  (build)',
   'reap     (build)',
+  'mast     (build)',
   'ae       (test)'
 ]
 

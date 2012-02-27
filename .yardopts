@@ -1,3 +1,4 @@
+--title Spectroscope
 --output-dir doc
 --protected
 --readme README.rdoc

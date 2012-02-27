@@ -1,4 +1,4 @@
-module Spectra
+module Spectroscope
 
   # Context advice.
   #

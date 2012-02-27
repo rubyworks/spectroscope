@@ -4,7 +4,7 @@ Test.run :default do |run|
   run.files << 'spec/*_spec.rb'
 
   require 'ae/should'
-  require 'spectra'
+  require 'spectroscope'
 end
 
 Test.run(:cov) do |run|
@@ -14,7 +14,7 @@ Test.run(:cov) do |run|
 
   SimpleCov.start do
     require 'ae/should'
-    require 'spectra'
+    require 'spectroscope'
 
     coverage_dir 'log/coverage'
   end
