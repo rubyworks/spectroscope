@@ -17,7 +17,7 @@ code { color: #222; font-weight: bold; }
 #nav a:hover { color: orange; text-decoration: none; }
 
 #header { height: 250px; text-align: left; }
-#header h1 { font-size: 100px; margin: 0; padding: 25px 0 0 0; color: red; margin-left: -10px; text-shadow: 5px 5px 5px #ccc; }
+#header h1 { font-size: 80px; margin: 0; padding: 25px 0 0 0; color: red; margin-left: -10px; text-shadow: 5px 5px 5px #ccc; }
 #header h2 { padding: 0 0 0 140px; margin-top: 0; }
 
 #main { color: white; padding: 20px 0 30px 0; background: url(../images/bg.jpg) top left white; }
