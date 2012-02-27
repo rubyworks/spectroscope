@@ -7,7 +7,10 @@ module Spectroscope
   require 'spectroscope/example'
   require 'spectroscope/context'
 
+  # The DSL module extends the toplevel.
+  #
   module DSL
+
     #
     # Define an example group.
     #
@@ -33,11 +36,33 @@ module Spectroscope
   end
 
   #
+  # Store for shared examples.
+  #
+  # @return [Hash] shared examples
+  #
   def self.shared_examples
     @shared_examples ||= {}
+  end
+
+  #
+  # Access to project metadata.
+  #
+  # @return [Hash] metadata
+  #
+  def self.metadata
+    @metadata ||= (
+      require 'yaml'
+      YAML.load_file(File.dirname(__FILE__), '/spectrascope.yml')
+    )
+  end
+
+  #
+  # If constant is missing, check for it in project metadata.
+  #
+  def self.const_missing(name)
+    metadata[name.to_s.downcase] || super(name)
   end
 
 end
 
 extend Spectroscope::DSL
-
